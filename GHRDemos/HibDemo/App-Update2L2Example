@@ -1,0 +1,40 @@
+package com.revature.HibDemo;
+
+import java.util.*;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
+
+public class App {
+	public static void main(String[] args) {
+		Configuration con = new Configuration().configure().addAnnotatedClass(User.class);
+		SessionFactory sessionFactory = con.buildSessionFactory();
+
+		// ------------Session1----------------//
+		Session session1 = sessionFactory.openSession();
+		session1.beginTransaction();
+		
+		User u1 = session1.get(User.class, 3);
+		System.out.println(u1.id + " " + u1.name + " " + u1.location);
+
+		session1.getTransaction().commit();
+		session1.close();
+		// ------------Session1----------------//
+		
+		
+
+		// ------------Session2----------------//
+		Session session2 = sessionFactory.openSession();
+		session2.beginTransaction();
+
+		User u2 = session2.get(User.class, 3);
+		System.out.println(u2.id + " " + u2.name + " " + u2.location);
+		
+		session2.getTransaction().commit();
+		session2.close();
+		// ------------Session2----------------//
+
+	}
+}
