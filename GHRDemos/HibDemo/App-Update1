@@ -1,0 +1,78 @@
+package com.revature.HibDemo;
+
+import java.util.*;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
+
+public class App 
+{
+    public static void main( String[] args )
+    {
+        Configuration con = new Configuration().configure().addAnnotatedClass(User.class);
+        
+        SessionFactory  sessionFactory = con.buildSessionFactory();
+     
+        Session session = sessionFactory.openSession();
+        
+        session.beginTransaction();
+        
+        String hql = "FROM User";
+        
+        Query  query = session.createQuery(hql);
+        
+        List<User> users = query.list();
+        
+        for (User user : users) {
+			System.out.println(user.id + " " + user.name + " " + user.location);
+		}
+        
+        Scanner sc = new Scanner(System.in);
+   
+        
+        System.out.println("Enter the ID to update");
+        int idToUpdate =  sc.nextInt();
+        
+        System.out.println("Enter the name to update");
+        String nameToUpdate = sc.next();
+        
+        Query query2 = session.createQuery("UPDATE User SET name = :name Where id = :id");
+        query2.setParameter("name", nameToUpdate);
+        query2.setParameter("id", idToUpdate);
+        
+        query2.executeUpdate();
+        
+		/*
+		 * System.out.println("Enter the ID to get:"); int idToGet = sc.nextInt();
+		 * 
+		 * User u = session.get(User.class, idToGet); System.out.println(u.id + " " +
+		 * u.name + " " + u.location);
+		 */
+         
+      
+        session.getTransaction().commit();     
+        
+        session.close();
+        
+        Session session2 = sessionFactory.openSession();
+        session2.beginTransaction();
+        String hql2 = "FROM User";
+        
+        Query  query3 = session2.createQuery(hql2);
+        
+        List<User> users2 = query3.list();
+        
+        for (User user : users2) {
+			System.out.println(user.id + " " + user.name + " " + user.location);
+		}
+       
+        session2.getTransaction().commit();     
+        
+        session2.close();
+        
+        
+   
+    }
+}
