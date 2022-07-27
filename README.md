@@ -10,6 +10,7 @@
     -  Session
     -  Query
     -  Criteria
+    -  Transaction
 - Annotation of Model Class (Repersentation of the table) ->  @Entity, @ID, @Table, @Coloumn, @GeneratedValue
 - CRUD operations , Named Queries and SQLQueries
 - Object States
